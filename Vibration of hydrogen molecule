@@ -1,0 +1,35 @@
+clc;clear;clf();
+h=1973;m=940e6;
+e=3.795;
+a=0.53;
+alpha=1.44;
+rmin=1e-10;rmax=10;n=500;
+r=linspace(rmin,rmax,n);
+d=r(2)-r(1);
+V=zeros(n,n);
+D=0.755501;r0=0.131349;
+for i=1:n
+s(i)=(r(i)-r0)/r(i);
+V(i,i)=D*(e^(-2*a*s(i)-e^(-alpha*s(i))))
+end
+K=eye(n,n)*(-2)
+for i=1:n-1
+K(i,i+1)=1
+K(i+1,i)=1
+end
+H=(-h^2)/(2*m*d^2)*K+V;
+[U, EV]=spec(H)
+E=diag(EV);
+//format(6);
+disp("ground state :"+string(E(2))+"MeV")
+disp("frist excited atate :"+string(E(3))+"MeV")
+//lets plot energy wavefunction vs radius r
+plot(r'
+,[U(:,1),U(:,2)],'linewidth',4);
+xgrid()
+legend('ground state','first excited state',5)
+xlabel('r(A)','fontsize',4)
+ylabel('PSI','fontsize',4)
+a=gca()
+a.x_location="origin"
+a.y_location="origin"
