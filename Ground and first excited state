@@ -1,0 +1,28 @@
+clf
+hbar = 1973 //in evA
+m = 0.511e6;
+e = 3.795;
+xmin = 1e-10;
+xmax = 10;
+n = 1000;
+x = linspace(xmin, xmax, n)
+d = x(2) - x(1)
+V=zeros(n,n)
+for i = 1:n
+V(i, i) = (-(e^2) / x(i))
+end
+K = eye(n, n) * (-2)
+for i = 1:(n-1)
+K(i, i + 1) = 1
+K(i + 1, i) = 1
+end
+H = (-(hbar^2) / (2 * m * d^2)) * K + V
+[U, EV] = spec(H)
+E = diag(EV) //eigenvalues(possible energies)
+disp("ground state energy "+string(E(2))+" eV ","1st excited state energy " +string(E(3))+" eV",E(4))
+plot2d(x'
+,[U(:,2),U(:,3)])
+legend("Ground state","1st excited state",1)
+xlabel('x')
+ylabel('wavefunction')
+xgrid(5)
